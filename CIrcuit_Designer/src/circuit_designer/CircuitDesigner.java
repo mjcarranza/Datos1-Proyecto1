@@ -1,420 +1,629 @@
 /**
- * showing the package`s name
+ * Se muestra el nombre del paquete
  */
 
 package circuit_designer;
 
 /**
- * se importan las librerias necesarias.
+ * Se importan las librerías necesarias.
  */
 import javax.swing.*;
-import javax.swing.ImageIcon;
-import java.awt.Color;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.event.*;
 import java.awt.*;
-import java.util.*;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 
 /**
- * creacion de la clase principal.
+ * Esta clase contiene la interfaz principal del programa.
  * @author Mario
- * @param <Nodo>
- * @param <Enlace>
  *
  */
 
 @SuppressWarnings("serial")
-public class CircuitDesigner<Nodo, Enlace> extends JFrame implements ActionListener, MouseMotionListener{
+public class CircuitDesigner extends JFrame implements ActionListener, MouseMotionListener{
 	
 	/**
-	 * establishing needed variables.
+	 * se establecen las variables necesarias.
 	 */
 	
-	private static JLabel label1, label2, label3,label4,label5,label6,label7,label8,label9,label10,label11,label12,label13;
-	private static JLabel conectorAnd, conectorNand, conectorOr, conectorNor, conectorNot, conectorXnor, conectorXor, conectorInput, conectorOutput;
+	private JLabel label1, label2, label3,label4,label5,label6,label7,label8,label9,label10,label11,label12,label13,label14,label15,label16,label17,label18,label19,label20,label21;
+	private JLabel conectorAnd, conectorNand, conectorOr, conectorNor, conectorNot, conectorXnor, conectorXor, conectorInput, conectorOutput;
 	private JButton boton1, boton2;
-	/*
-	private int xRectangulo = 0;
-	private int yRectangulo = 0;
-	private int anchoRectangulo = 100;
-	private int altoRectangulo = 100;
-	private boolean arrastrando = false;
-	private int xAnteriorRaton;
-	private int yAnteriorRaton;*/
-	private ArrayList<Double> listaObjetos;
+	private JTable tabla1;
+	private JTextField texto;
+	private int cuentaEntradas = 0; 
+	private int cuentaSalidas = 0;
 	
-	/*
-	private Vector<Nodo> vectorNodos;       //\\
-	private Vector<Enlace> vectorEnlaces;   //\\\
-	private Point P1, P2;                   /////|  //ver si estos se pueden implemetar para unir los conectores con lineas//
-	private Nodo MoverNodo;                 /////
-	private int iNodo;                      ////
-	*/
-	
-	//private JTextArea Typing_area;
-	//private JScrollPane palette_scroll;                       ///////////////ver si es necesario usar estas cosas ///////////////////////////////////
-	
+	/**
+	 * Implementación de clase lista enlazada.
+	 */
+	ListaObjetos lista = new ListaObjetos();
+
 	/**
 	 * se establece el constructor de la clase.
 	 */
 	public CircuitDesigner() {
+		
 		/**
-		 * se definen las variables de dise�o (estiquetas, botones) necesarias.
+		 * se definen las variables de diseño (estiquetas, botones) necesarias.
 		 */
 		setLayout(null);
 		getContentPane().setBackground(Color.LIGHT_GRAY);
-		
-		/**
-		 * se establece el titulo de la interfaz
-		 */
-		
 		setTitle("CIRCUIT DESIGNER");
 		
-		/*
-		 * se a�ade un listener para el comportamiento del mouse 
-		 */
-		addMouseMotionListener(this);
+		JPanel panel1 = new JPanel();
+		panel1.setBounds(400,110,640, 600);
+		panel1.setBackground(new Color(249,249,249));
+		panel1.setLayout(null);
+		add(panel1);
 		
-		/*
-		this.vectorNodos = new Vector<>();
-		this.vectorEnlaces = new Vector<>();
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-		*/
+		tabla1 = new JTable();
+		tabla1.setBackground(new Color(249,249,249));
+		tabla1.setBounds(10,110,380,600);
+		tabla1.setBackground(Color.DARK_GRAY);
+		tabla1.setFont(new Font("Times New Roman", 1, 20));
+		tabla1.setForeground(Color.red);
+		add(tabla1);
+
 		
-		/*
-		 * etiquetas.
+		/**
+		 * Etiqueta para identificación de paleta.
 		 */
-		
-		/*
-		 * etiqueta para identificacion de paleta.
-		 */
+
 		label1 = new JLabel("PALETTE");
 		label1.setBounds(1120,65,100,30);
 		label1.setFont(new Font("Times New Roman", 1, 20));
+		label1.setForeground(Color.RED);
 		add(label1);
 		
-		/*
-		 * etiqueta para el titulo de la interfaz
+		/**
+		 * Etiqueta para el titulo de la interfaz.
 		 */
 		label2 = new JLabel("CIRCUIT DESIGNER");
-		label2.setBounds(25,15,300,20);
+		label2.setBounds(550,15,300,20);
 		label2.setFont(new Font("Times New Roman", 3, 20));
 		add(label2);
 		
-		/*
+		/**
+		 * Etiqueta para identificación de tabla de verdad.
+		 */
+		label17 = new JLabel("TABLE OF TRUTH");
+		label17.setFont(new Font("Times New Roman", 1, 20));
+		label17.setForeground(Color.RED);
+		label17.setBounds(100,65,200,30);
+		add(label17);
+		
+		/**
+		 * Etiqueta para identificación del área de trabajo.
+		 */
+		label18 = new JLabel("DESIGN");
+		label18.setFont(new Font("Times New Roman", 1, 20));
+		label18.setForeground(Color.RED);
+		label18.setBounds(690,65,200,30);
+		add(label18);
+		
+		/**
 		 * etiqueta para conector AND
 		 */
-		ImageIcon And = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/AND.png"); 
+		ImageIcon And = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/AND.png"); 
 		label4 = new JLabel(And);
-		label4.setBounds(1030,125,150,70);
+		label4.setBounds(1071,137,69,46);
 		add(label4);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
 		label4.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
 			public void mouseClicked(MouseEvent e) {
-				conectorAnd.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/AND.png"));
-				addMouseMotionListener(this);
+				conectorAnd = new JLabel();
+				conectorAnd.setSize(label4.getWidth(), label4.getHeight());
+				panel1.add(conectorAnd);
+				/**
+				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
+				 */
+				lista.insertFirst(""+conectorAnd.getLocation());
+				System.out.println(lista.find(""+conectorAnd.getLocation()));
+				lista.displayList();
+				conectorAnd.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/AND.png"));
+				conectorAnd.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						if(e.getButton() == MouseEvent.BUTTON1) {
+						conectorAnd.setLocation(conectorAnd.getX()+evt.getX()-conectorAnd.getWidth()/2,conectorAnd.getY()+evt.getY()-conectorAnd.getHeight()/2);
+						}
+						
+						////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+						// buscar en la lista el conector comparando con la posición del mouse con posx, posy, ancho y alto.                         ///////////////
+						// y hacer la validación en est area. utilizar el codigo de setLocation que está debajo de este código                       ///////////////
+						// para if: (conectorAnd.getX()+evt.getX()-conectorAnd.getWidth()/4,conectorAnd.getY()+evt.getY()-conectorAnd.getHeight()/4) ///////////////
+						////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					}
+				});
 			}
 			});
 		
-		/*
-		 * etiqueta para conector OR
+		/**
+		 * Etiqueta para conector OR
 		 */
-		ImageIcon Or = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/OR.png"); 
+		ImageIcon Or = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/OR.png"); 
 		label5 = new JLabel(Or);
-		label5.setBounds(1030,175,150,70);
+		label5.setBounds(1071,190,69,46);
 		add(label5);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
 		label5.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
 			public void mouseClicked(MouseEvent e) {
-				conectorOr.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/OR.png"));
-				addMouseMotionListener(this);
+				conectorOr = new JLabel();
+				conectorOr.setSize(label5.getWidth(), label5.getHeight());
+				panel1.add(conectorOr);
+				/**
+				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
+				 */
+				lista.insertFirst(""+conectorOr.getLocation());
+				conectorOr.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/OR.png"));
+				conectorOr.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						conectorOr.setLocation(conectorOr.getX()+evt.getX()-conectorOr.getWidth()/2,conectorOr.getY()+evt.getY()-conectorOr.getHeight()/2);
+					}
+				});
 			}
 			});
 		
-		
-		/*
-		 * etiqueta para conector NAND
+		/**
+		 * Etiqueta para conector NAND.
 		 */
-		ImageIcon Nand = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/NAND.png");
+		ImageIcon Nand = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/NAND.png");
 		label6 = new JLabel(Nand);
-		label6.setBounds(1135,125,150,70);
+		label6.setBounds(1180,137,69,46);
 		add(label6);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
 		label6.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
 			public void mouseClicked(MouseEvent e) {
-				conectorNand.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/NAND.png"));
-				addMouseMotionListener(this);
+				conectorNand = new JLabel();
+				conectorNand.setSize(label6.getWidth(), label6.getHeight());
+				panel1.add(conectorNand);
+				/**
+				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
+				 */
+				lista.insertFirst(""+conectorNand.getLocation());
+				conectorNand.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/NAND.png"));
+				conectorNand.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						conectorNand.setLocation(conectorNand.getX()+evt.getX()-conectorNand.getWidth()/2,conectorNand.getY()+evt.getY()-conectorNand.getHeight()/2);
+					}
+				});
 			}
 			});
 		
-		/*
-		 * etiqueta para conector NOR
+		/**
+		 * Etiqueta para conector NOR
 		 */
-		ImageIcon Nor = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/NOR.png"); 
+		ImageIcon Nor = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/NOR.png"); 
 		label7 = new JLabel(Nor);
-		label7.setBounds(1135,175,150,70);
+		label7.setBounds(1180,190,69,46);
 		add(label7);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
 		label7.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
 			public void mouseClicked(MouseEvent e) {
-				conectorNor.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/NOR.png"));
-				addMouseMotionListener(this);
+				conectorNor = new JLabel();
+				conectorNor.setSize(label7.getWidth(), label7.getHeight());
+				panel1.add(conectorNor);
+				/**
+				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
+				 */
+				lista.insertFirst(""+conectorNor.getLocation());
+				conectorNor.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/NOR.png"));
+				conectorNor.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						conectorNor.setLocation(conectorNor.getX()+evt.getX()-conectorNor.getWidth()/2,conectorNor.getY()+evt.getY()-conectorNor.getHeight()/2);
+					}
+				});
 			}
 			});
-		
-		/*
-		 * etiqueta para conector XOR
+		/**
+		 * Etiqueta para conector XOR
 		 */
-		ImageIcon Xor = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/XOR.png");
+		ImageIcon Xor = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/XOR.png");
 		label8 = new JLabel(Xor);
-		label8.setBounds(1030,225,150,70);
+		label8.setBounds(1071,243,69,46);
 		add(label8);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
 		label8.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
 			public void mouseClicked(MouseEvent e) {
-				conectorXor.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/XOR.png"));
-				addMouseMotionListener(this);
+				conectorXor = new JLabel();
+				conectorXor.setSize(label8.getWidth(), label8.getHeight());
+				panel1.add(conectorXor);
+				/**
+				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
+				 */
+				lista.insertFirst(""+conectorXor.getLocation());
+				conectorXor.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/XOR.png"));
+				conectorXor.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						conectorXor.setLocation(conectorXor.getX()+evt.getX()-conectorXor.getWidth()/2,conectorXor.getY()+evt.getY()-conectorXor.getHeight()/2);
+					}
+				});
 			}
 			});
 		
-		/*
-		 * etiqueta para conector XNOR
+		/**
+		 * Etiqueta para conector XNOR
 		 */
-		ImageIcon Xnor = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/XNOR.png");
+		ImageIcon Xnor = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/XNOR.png");
 		label9 = new JLabel(Xnor);
-		label9.setBounds(1135,225,150,70);
+		label9.setBounds(1180,243,69,46);
 		add(label9);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
 		label9.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
 			public void mouseClicked(MouseEvent e) {
-				conectorXnor.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/XNOR.png"));
-				addMouseMotionListener(this);
+				conectorXnor = new JLabel();
+				conectorXnor.setSize(label9.getWidth(), label9.getHeight());
+				panel1.add(conectorXnor);
+				/**
+				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
+				 */
+				lista.insertFirst(""+conectorXnor.getLocation());
+				conectorXnor.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/XNOR.png"));
+				conectorXnor.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						conectorXnor.setLocation(conectorXnor.getX()+evt.getX()-conectorXnor.getWidth()/2,conectorXnor.getY()+evt.getY()-conectorXnor.getHeight()/2);
+					}
+				});
 			}
 			});
 		
-		/*
-		 * etiqueta para conector NOT
+		/**
+		 * Etiqueta para conector NOT
 		 */
-		ImageIcon Not = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/NOT.png"); 
+		ImageIcon Not = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/NOT.png"); 
 		label10 = new JLabel(Not);
-		label10.setBounds(1030,275,150,70);
+		label10.setBounds(1071,295,69,46);
 		add(label10);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
 		label10.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
 			public void mouseClicked(MouseEvent e) {
-				conectorNot.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/NOT.png"));
-				addMouseMotionListener(this);
+				conectorNot = new JLabel();
+				conectorNot.setSize(label10.getWidth(), label10.getHeight());
+				panel1.add(conectorNot);
+				/**
+				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
+				 */
+				lista.insertFirst(""+conectorNot.getLocation());
+				conectorNot.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/NOT.png"));
+				conectorNot.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						conectorNot.setLocation(conectorNot.getX()+evt.getX()-conectorNot.getWidth()/2,conectorNot.getY()+evt.getY()-conectorNot.getHeight()/2);
+					}
+				});
 			}
 			});
 		
-		/*
-		 * etiqueta para conector INPUT
+		/**
+		 * Etiqueta para conector INPUT
 		 */
-		ImageIcon Input = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/INPUT.png"); 
+		ImageIcon Input = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/INPUT.png"); 
 		label12 = new JLabel(Input);
-		label12.setBounds(1135,275,150,70);
+		label12.setBounds(1180,295,69,46);
 		add(label12);
-		label12.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e) {
-				conectorInput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/INPUT.png"));
-				addMouseMotionListener(this);
-			}
-			});
-		
-		/*
-		 * etiqueta para conector OUTPUT
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
 		 */
-		ImageIcon Output = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/OUTPUT.png"); 
-		label13 = new JLabel(Output);
-		label13.setBounds(1030,325,150,70);
-		add(label13);
-		label13.addMouseListener(new MouseAdapter(){
+		label12.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
 			public void mouseClicked(MouseEvent e) {
-				conectorOutput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L�GICOS/OUTPUT.png"));
-				addMouseMotionListener(this);
+				conectorInput = new JLabel();
+				conectorInput.setSize(label12.getWidth(), label12.getHeight());
+				panel1.add(conectorInput);
+				/*
+				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
+				 */
+				lista.insertFirst(""+conectorInput.getLocation());
+				cuentaEntradas += 1;
+				conectorInput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/INPUT.png"));
+				conectorInput.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						conectorInput.setLocation(conectorInput.getX()+evt.getX()-conectorInput.getWidth()/2,conectorInput.getY()+evt.getY()-conectorInput.getHeight()/2);
+						
+						// agreagar que se elimine de la lista si está fuera del panel.
+						// if(esta fuera del panel = true){
+						//    cuentaEntradas -= 1;
+						//}
+					}
+				});
 			}
 			});
 		
-		/*
-		 * etiqueta de informacion de uso.
+		/**
+		 * Etiqueta para conector OUTPUT
+		 */
+		ImageIcon Output = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/OUTPUT.png"); 
+		label13 = new JLabel(Output);
+		label13.setBounds(1071,347,69,46);
+		add(label13);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
+		label13.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
+			public void mouseClicked(MouseEvent e) {
+				conectorOutput = new JLabel();
+				conectorOutput.setSize(label13.getWidth(), label13.getHeight());
+				panel1.add(conectorOutput);
+				/**
+				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
+				 */
+				lista.insertFirst(""+conectorOutput.getLocation());
+				cuentaSalidas += 1;
+				conectorOutput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/OUTPUT.png"));
+				conectorOutput.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						conectorOutput.setLocation(conectorOutput.getX()+evt.getX()-conectorOutput.getWidth()/2,conectorOutput.getY()+evt.getY()-conectorOutput.getHeight()/2);
+					}
+				});
+			}
+			});
+		
+		ImageIcon Text = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/TEXT.jpg"); 
+		label19 = new JLabel(Text);
+		label19.setBounds(1180,347,69,46);
+		add(label19);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
+		label19.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
+			public void mouseClicked(MouseEvent e) {
+				texto = new JTextField();
+				texto.setBackground(Color.lightGray);
+				texto.setForeground(Color.black);
+				texto.setFont(new Font("Times New Roman", 1, 17));
+				texto.setSize(60, 20);
+				panel1.add(texto);
+				texto.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent evt) {
+						texto.setLocation(texto.getX()+evt.getX()-texto.getWidth()/2,texto.getY()+evt.getY()-texto.getHeight()/2);
+					}
+				});
+			}
+			});
+		
+		
+		/**
+		 * Etiqueta de información de uso.
 		 */
 		label11 = new JLabel("Click on the connector to use.");
 		label11.setBounds(1050,100,250,30);
 		label11.setFont(new Font("Times New Roman", 0, 17));
 		add(label11);
 		
-		/*
-		 * etiqueta para colocar los conectores logicos
+		/**
+		 * Etiqueta para colocar los conectores lógicos
 		 */
 		label3 = new JLabel();
 		label3.setOpaque(true);
 		label3.setBackground(Color.DARK_GRAY);
 		label3.setBounds(1050,130,220,500);
 		add(label3);
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * botones.
+		
+		/**
+		 * Etiquetas separadoras de la interfaz
 		 */
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * boton para simular el circuito.
+		label14 = new JLabel();
+		label14.setOpaque(true);
+		label14.setBackground(Color.white);
+		label14.setBounds(10,50,1270,2);
+		add(label14);
+		
+		label15 = new JLabel();
+		label15.setOpaque(true);
+		label15.setBackground(Color.white);
+		label15.setBounds(1044,60,2,45);
+		add(label15);
+		
+		label16 = new JLabel();
+		label16.setOpaque(true);
+		label16.setBackground(Color.white);
+		label16.setBounds(394,60,2,45);
+		add(label16);
+		
+		
+		
+		
+		/**
+		 * Botón para simular el circuito.
 		 */
 		boton1 = new JButton("SIMULATE");
 		boton1.setBounds(1169,655,100,30);
 		boton1.setFont(new Font("Times New Roman", 1, 12));
+		boton1.setBackground(Color.DARK_GRAY);
+		boton1.setForeground(Color.WHITE);
 		add(boton1);
 		boton1.addActionListener(this);
 		
-		/*
-		 * boton para crear nuevo dise�o.            // si queda tiempo hacer aviso de que se va a crear nuevo.
+		/**
+		 * Botón para crear nuevo diseño.
 		 */
-		boton2 = new JButton("NEW");
+		boton2 = new JButton("SAVE");
 		boton2.setBounds(1050,655,100,30);
 		boton2.setFont(new Font("Times New Roman", 1, 12));
+		boton2.setBackground(Color.DARK_GRAY);
+		boton2.setForeground(Color.WHITE);
 		add(boton2);
 		boton2.addActionListener(this);
 		
-		/*
-		 * se agregan funciones a cada etiqueta de conector para que al dar click sobre ellas, aparezca una copia en el area de trabajo.
-		 */
-		conectorAnd = new JLabel();
-		conectorAnd.setBounds(10,155,100,70);
-		add(conectorAnd);
-		
-		conectorOr = new JLabel();
-		conectorOr.setBounds(10,155,100,70);
-		add(conectorOr);
-		
-		conectorNand = new JLabel();
-		conectorNand.setBounds(10,155,100,70);
-		add(conectorNand);
-		
-		conectorNor = new JLabel();
-		conectorNor.setBounds(10,155,100,70);
-		add(conectorNor);
-		
-		conectorNot = new JLabel();
-		conectorNot.setBounds(10,155,100,70);
-		add(conectorNot);
-		
-		conectorXor = new JLabel();
-		conectorXor.setBounds(10,155,100,70);
-		add(conectorXor);
-		
-		conectorXnor = new JLabel();
-		conectorXnor.setBounds(10,155,100,70);
-		add(conectorXnor);
-		
-		conectorInput = new JLabel();
-		conectorInput.setBounds(10,155,100,70);
-		add(conectorInput);
-		
-		conectorOutput = new JLabel();
-		conectorOutput.setBounds(10,155,100,70);
-		add(conectorOutput);
-		
-		
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		/*palette_scroll = new JScrollPane(Typing_area);
-		palette_scroll.setBounds(10,55,1020,631);             // ver si necesito esto para el calculo de tabla
-		add(palette_scroll);*/
-		
-		
-	    /*
-	     * Fin del constructor.	
-	     */
 	}
 	
+	private String [] nombresCol = {};
+
+	
+	////////////////////////////      HACER METODO AQUI PARA VER SI EL CONECTOR ESTA O NO FUERA DEL PANEL Y SI LO ESTA, QUE RETORNE TRUE.        ////////////////////////
 	
 	/**
-	 * evaluando eventos realizados por "boton1" y "boton2"
+	 * Método para mostrar en pantalla la tabla de verdad del circuito.
+	 * @param matriz
+	 * @param n
 	 */
+    public void mostrarMatriz(int matriz[][], int n){
+    	
+    	int m = (int) Math.pow(2, n);
+    	 DefaultTableModel model = (DefaultTableModel) tabla1.getModel();
+    	 /**
+    	  * Establece el numero de filas que va a tener la tabla.
+    	  */
+        model.setRowCount(m);  
+        /**
+         * Establece el numero de columnas que va a tener la tabla.
+         */
+        model.setColumnCount(n);
+        try {
+        for(int i=0; i<m; i++){
+            for(int j=n-1; j>=0; j--){
+            	/**
+            	 * Establace los valores para cada celda en el modelo de la tabla para cada fila y columna.
+            	 */
+                tabla1.setValueAt(matriz[i][j], i, j); 
+            }
+        }
+        }
+        catch(Exception e) {
+        	System.out.println("Error de ejecucion 1.");
+        }
+    }
+    
+    /**
+     * Método para calcular la tabla de verdad.
+     * @param n
+     * @return
+     */
+    public int [][] matrizNormal(int n){
+        int[][] matriz = new int[10000][500];
+        int m = (int) Math.pow(2, n);
+        try {
+        	for (int i=0;   i < m;   i++) {
+        		for (int j=n-1;   j>=0;   j--)  {
+            	matriz[i][j] = (i/(int) Math.pow(2, j)) % 2; 
+            }
+        }}
+        catch(Exception e) {
+        	System.out.println("Error de ejecucion 2.");
+        }
+       	return matriz;
+    }
+    
+    
 	
+	/**
+	 * Se evalúan eventos realizados por "boton1" y "boton2".
+	 */
 	public void actionPerformed(ActionEvent e) {
+		System.out.println("actionPerformed");////////////// prueba //////
 		if(e.getSource() == boton1) {
 			
-			/*
-			 * Se manda a llamar la interfaz de la tabla de verdad //  // agregar que se calcule la tabla de verdad.
-			 */
-			Table tabla1 = new Table();
-			tabla1.setBounds(0,0,700,500);
-			tabla1.setVisible(true);
-			tabla1.setResizable(false);
-			tabla1.setLocationRelativeTo(null);
-			this.setVisible(false);
+			int n = cuentaEntradas; /// este numero es provisional, es decir, lo voy a obtener del contador que identifique los componentes de la lista.
+			int[][] matriz = new int[10000][500];
+			matriz = this.matrizNormal(n);  // matriz va a ser igual a la matriz que se forme en ese metodo.
+			this.mostrarMatriz(matriz, n);
+			
+		    //Validar que se guarde en el archivo json
 			
 		}else if(e.getSource() == boton2) {
 			
-			/*
-			 * se manda a llamar una nueva interfaz principal.
-			 */
-			@SuppressWarnings("rawtypes")
-			CircuitDesigner circuito1 = new CircuitDesigner();
-			circuito1.setBounds(0,0,1300,750);
-			circuito1.setVisible(false);
-			circuito1.setResizable(false);
-			circuito1.setLocationRelativeTo(null);
 		}
 	}
 	
+	@SuppressWarnings("null")
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		if(e.getModifiersEx() == MouseEvent.BUTTON1_DOWN_MASK) {
-			conectorAnd.setLocation(e.getPoint());
-			conectorAnd.repaint();
-		}
+	public void mouseDragged(MouseEvent l) {
 		
 	}
 
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
-	
-	
 	
 	
 	/**
-	 * definiendo el metodo main de la clase.
+	 * Definiendo el método main de la clase.
 	 * @param asrgs
 	 */
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void main(String[] asrgs) {
-		CircuitDesigner listaObj1 = new CircuitDesigner(); ///////////////////////////////////////mejorar esto, aun no funciona como lista.
-		listaObj1.listaObjetos = new ArrayList();
-		listaObj1.add(label4, 0);
-		listaObj1.add(label5, 1);
-		listaObj1.add(label6, 2);
-		listaObj1.add(label7, 3);
-		listaObj1.add(label8, 4);
-		listaObj1.add(label9, 5);
-		listaObj1.add(label10,6);
-		listaObj1.add(label12,7);
-		listaObj1.add(label13,8);
 		/**
-		 * creando dise�o de interfaz.
+		 * Creando diseño de interfaz.
 		 */
 		CircuitDesigner circuito1 = new CircuitDesigner();
 		circuito1.setBounds(0,0,1300,750);
 		circuito1.setVisible(true);
 		circuito1.setResizable(false);
 		circuito1.setLocationRelativeTo(null);
+		circuito1.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
-
+/**
+ * Fin de la clase.
+ */
 }
 
 
 
-/* comentarios adicionales: 
- *  doble buffer (buscar) por si se presentan parpadeos de la interfaz al arrastrar.
+/* comentarios generales: 
+ * 
+ *  para que se muevan todos los conectores de un mismo tipo, crear un objeto tipo nodo en el cual se va a almacenar la etiqueta y además 
+ *  sus posiciones en x,y y su alto y ancho, de manera que yo pueda implementar un metodo que va a evaluar sobre que etiqueta está posicionado 
+ *  el mouse con x- (x + width), y - (y + height).
  *  
+ *  para conectar los concetores, usar etiquetas (puede ser una imagen de una linea o dibujar la linea con el metodo draw line)
  *  
+ *  para la tabla de verdad hacer otra lista enlazada y ademas ver ficha donde esta un diagrama
  *  
+ *  preguntar que tipo de lista usar y como para meter las imagenes de conectores (se puede usar linked list o Jlist o caul?)
+ *  se me facilitaría usar un tipo de lista en la que  se puedan usar indices o claves.
  *  
+ *  preguntar si las lines que debo hacer se pueden hacer con una clase vector (mostrar codigo de arriba donde esta lo del vector comentado).
+ *  
+ *  // probar haciendo arreglo de tipo entero para pasar posiciones finales de la etiqueta y luego recorrer el arreglo con un for que tenga 
+ *  la condicion de que si la posicion del mouse es igual a la variable i del for (que seria como el contador o indice para que se valla incrementando en 
+ *  valor y se pueda recorrer el arreglo), entonces que se mueva esa etiqueta.
+ *   
+ *   
+ *   ??????????como hago un objeto de tipo nodo para guardar los datos de cada compuerta???????????????????????????????
  *  
  * */
-
-
-
-
-
-
-
