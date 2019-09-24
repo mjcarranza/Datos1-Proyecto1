@@ -1,22 +1,36 @@
+/**
+ * Paquete.
+ */
 package circuit_designer;
+/**
+ * Importar labrer铆as necesarias.
+ */
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-// importaciones de librerias
 import javax.swing.*;
 
-
+/**
+ * Esta clase contiene la interfaz de bienvenida al programa.
+ * @author Mario
+ *
+ */
 @SuppressWarnings("serial")
 public class Bienvenida extends JFrame implements ActionListener{
-	
+	/**
+	 * Declaraci贸n de variables para la ejacuci贸n.
+	 */
 	private JLabel bienvenida, title, fondo, creditos, creditos2;
 	private JButton crearDiseno, salir;
-	
+	/**
+	 * Declaracion del constructor de la clase.
+	 */
 	public Bienvenida(){
 		setLayout(null);
-		
+		/**
+		 * Creaci贸n de etiquetas para la interfaz.
+		 */
 		bienvenida = new JLabel("WELLCOME!");
 		bienvenida.setBounds(650,225,500,60);
 		bienvenida.setFont(new Font("Times New Roman", 3, 50));
@@ -40,7 +54,9 @@ public class Bienvenida extends JFrame implements ActionListener{
 		creditos2.setFont(new Font("Times New Roman", 2, 20));
 		creditos2.setForeground(Color.CYAN);
 		add(creditos2);
-		
+		/**
+		 * Creaci贸n de botones para la interfaz.
+		 */
 		crearDiseno = new JButton("START SIMULATING");
 		crearDiseno.setBounds(700,350,220,40);
 		crearDiseno.setFont(new Font("Times New Roman", 1, 18));
@@ -56,21 +72,36 @@ public class Bienvenida extends JFrame implements ActionListener{
 		salir.setForeground(Color.WHITE);
 		add(salir);
 		salir.addActionListener(this);	
-		
-		ImageIcon BackGround = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L覩ICOS/circuito.png"); 
+		/**
+		 * Imagen de fondo.
+		 */
+		ImageIcon BackGround = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES L脫GICOS/circuito.png"); 
 		fondo = new JLabel(BackGround);
 		fondo.setBounds(0,0,1000,562);
 		add(fondo);
 	}
+	/**
+	 * M茅todo para comportamieto de los botones.
+	 */
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == salir) {	
+		/**
+		 * Bot贸n para salir de la interfaz.
+		 */
+		if(e.getSource() == salir) {
+			/**
+			 * Mensaje de advertencia antes de salir
+			 */
+			JOptionPane.showMessageDialog(null, "Do you really wan to leave?.");
+			/**
+			 * Acci贸n de salir.
+			 */
 			System.exit(0);
-			//JOption es para mostrar un mensaje de advertencia de que el dise駉 creado ha sido guardado en el archivo json. 
-		    JOptionPane.showMessageDialog(null, "do .");
-		    //Validar que se guarde en el archivo json
 		    
-		} if(e.getSource() == crearDiseno) {
-			@SuppressWarnings("rawtypes")
+		} 
+		/**
+		 * Bot贸n para entrar a interfaz principal.
+		 */
+		if(e.getSource() == crearDiseno) {
 			CircuitDesigner circuito1 = new CircuitDesigner();
 			circuito1.setBounds(0,0,1300,750);
 			circuito1.setVisible(true);
@@ -79,7 +110,9 @@ public class Bienvenida extends JFrame implements ActionListener{
 			this.setVisible(false);
 		}
 	}
-
+	/**
+	 * M茅todo main de la clase.
+	 */
 	public static void main(String[] args) {
 		Bienvenida Wellcome = new Bienvenida();
 		Wellcome.setBounds(0,0,1000,562);
