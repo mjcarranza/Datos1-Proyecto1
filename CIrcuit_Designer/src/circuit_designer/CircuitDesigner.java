@@ -28,12 +28,15 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 	 */
 	
 	private JLabel label1, label2, label3,label4,label5,label6,label7,label8,label9,label10,label11,label12,label13,label14,label15,label16,label17,label18,label19,label20,label21;
-	private JLabel conectorAnd, conectorNand, conectorOr, conectorNor, conectorNot, conectorXnor, conectorXor, conectorInput, conectorOutput;
+	private JLabel conectorAnd, conectorNand, conectorOr, conectorNor, conectorNot, conectorXnor, conectorXor, conectorInput, conectorOutput, lineaH, lineaV;
 	private JButton boton1, boton2;
 	private JTable tabla1;
 	private JTextField texto;
 	private int cuentaEntradas = 0; 
-	private int cuentaSalidas = 0;
+	private int cuentaConect   = 0;
+	private int cuentaSalidas  = 0;
+	private boolean remove = false;
+	JPanel panel1 = new JPanel();
 	
 	/**
 	 * Implementación de clase lista enlazada.
@@ -52,7 +55,6 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setTitle("CIRCUIT DESIGNER");
 		
-		JPanel panel1 = new JPanel();
 		panel1.setBounds(400,110,640, 600);
 		panel1.setBackground(new Color(249,249,249));
 		panel1.setLayout(null);
@@ -103,6 +105,75 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		label18.setBounds(690,65,200,30);
 		add(label18);
 		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		ImageIcon horizontal = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/H.jpg"); 
+		label20 = new JLabel(horizontal);
+		label20.setBounds(1071,400,69,46);
+		add(label20);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
+		label20.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
+			public void mouseClicked(MouseEvent e) {
+				lineaH = new JLabel();
+				lineaH.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/LH.png"));
+				lineaH.setSize(20, 10);
+				panel1.add(lineaH);
+				lineaH.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent e) {
+						lineaH.setCursor(new Cursor(MOVE_CURSOR));
+						lineaH.setLocation(lineaH.getX()+e.getX()-lineaH.getWidth()/2,lineaH.getY()+e.getY()-lineaH.getHeight()/2);
+					}
+					
+				});
+				panel1.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent l) {
+						lineaH.setSize(l.getX()-lineaH.getX(), lineaH.getHeight());
+					}
+				});
+			}
+			});
+	
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		
+		ImageIcon vertical = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/V.jpg"); 
+		label21 = new JLabel(vertical);
+		label21.setBounds(1180,400,69,46);
+		add(label21);
+		/**
+		 * Se agrega un escuchador de eventos a la etiqueta que ayude a moverla con el mouse.
+		 */
+		label21.addMouseListener(new MouseAdapter(){
+			/**
+			 * Al dar click sobre la etiqueta se crera una nueva con la misma imagen, la cual se añade al area de trabajo.
+			 */
+			public void mouseClicked(MouseEvent e) {
+				lineaV = new JLabel();
+				lineaV.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/LV.png"));
+				lineaV.setSize(10, 20);
+				panel1.add(lineaV);
+				lineaV.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent e) {
+						lineaV.setCursor(new Cursor(MOVE_CURSOR));
+						lineaV.setLocation(lineaV.getX()+e.getX()-lineaV.getWidth()/2,lineaV.getY()+e.getY()-lineaV.getHeight()/2);
+					}
+					
+				});
+				panel1.addMouseMotionListener(new MouseAdapter() {
+					public void mouseDragged(MouseEvent l) {
+						
+						lineaV.setSize(lineaV.getX(), l.getY()-lineaV.getHeight());
+						//lineaH.setSize(l.getX()-lineaH.getX(), lineaH.getHeight());
+					}
+				});
+			}
+			});
+		
 		/**
 		 * etiqueta para conector AND
 		 */
@@ -127,6 +198,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				lista.insertFirst(""+conectorAnd.getLocation());
 				System.out.println(lista.find(""+conectorAnd.getLocation()));
 				lista.displayList();
+				cuentaConect += 1;
 				conectorAnd.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/AND.png"));
 				conectorAnd.addMouseMotionListener(new MouseAdapter() {
 					public void mouseDragged(MouseEvent evt) {
@@ -480,7 +552,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		/**
 		 * Botón para crear nuevo diseño.
 		 */
-		boton2 = new JButton("SAVE");
+		boton2 = new JButton("REMOVE");
 		boton2.setBounds(1050,655,100,30);
 		boton2.setFont(new Font("Times New Roman", 1, 12));
 		boton2.setBackground(Color.DARK_GRAY);
@@ -490,10 +562,9 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		
 	}
 	
-	private String [] nombresCol = {};
+	
 
 	
-	////////////////////////////      HACER METODO AQUI PARA VER SI EL CONECTOR ESTA O NO FUERA DEL PANEL Y SI LO ESTA, QUE RETORNE TRUE.        ////////////////////////
 	
 	/**
 	 * Método para mostrar en pantalla la tabla de verdad del circuito.
@@ -564,11 +635,10 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		    //Validar que se guarde en el archivo json
 			
 		}else if(e.getSource() == boton2) {
-			
+		
 		}
 	}
 	
-	@SuppressWarnings("null")
 	@Override
 	public void mouseDragged(MouseEvent l) {
 		
@@ -627,3 +697,4 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
  *   ??????????como hago un objeto de tipo nodo para guardar los datos de cada compuerta???????????????????????????????
  *  
  * */
+
