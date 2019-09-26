@@ -28,13 +28,14 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 	 */
 	
 	private JLabel label1, label2, label3,label4,label5,label6,label7,label8,label9,label10,label11,label12,label13,label14,label15,label16,label17,label18,label19,label20,label21;
-	private JLabel conectorAnd, conectorNand, conectorOr, conectorNor, conectorNot, conectorXnor, conectorXor, conectorInput, conectorOutput, lineaH, lineaV;
+	private JLabel conectorAnd, conectorNand, conectorOr, conectorNor, conectorNot, conectorXnor, conectorXor, conectorInput, conectorOutput, lineaH, lineaV, labelIn, labelOut;
+	private JLabel sep1, sep2;
 	private JButton boton1, boton2;
-	private JTable tabla1;
+	private JTable tabla1, tabla2;
 	private JTextField texto;
-	private int cuentaEntradas = 0; 
+	private int cuentaIn = 0; 
 	private int cuentaConect   = 0;
-	private int cuentaSalidas  = 0;
+	private int cuentaOut  = 0;
 	private boolean remove = false;
 	JPanel panel1 = new JPanel();
 	
@@ -55,18 +56,26 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setTitle("CIRCUIT DESIGNER");
 		
-		panel1.setBounds(400,110,640, 600);
+		panel1.setBounds(400,100,640, 610);
 		panel1.setBackground(new Color(249,249,249));
 		panel1.setLayout(null);
 		add(panel1);
 		
 		tabla1 = new JTable();
 		tabla1.setBackground(new Color(249,249,249));
-		tabla1.setBounds(10,110,380,600);
+		tabla1.setBounds(10,130,240,580);
 		tabla1.setBackground(Color.DARK_GRAY);
 		tabla1.setFont(new Font("Times New Roman", 1, 20));
 		tabla1.setForeground(Color.red);
 		add(tabla1);
+		
+		tabla2 = new JTable();
+		tabla2.setBackground(new Color(249,249,249));
+		tabla2.setBounds(255,130,134,580);
+		tabla2.setBackground(Color.blue);
+		tabla2.setFont(new Font("Times New Roman", 1, 20));
+		tabla2.setForeground(Color.red);
+		add(tabla2);
 
 		
 		/**
@@ -93,8 +102,20 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		label17 = new JLabel("TABLE OF TRUTH");
 		label17.setFont(new Font("Times New Roman", 1, 20));
 		label17.setForeground(Color.RED);
-		label17.setBounds(100,65,200,30);
+		label17.setBounds(100,60,200,30);
 		add(label17);
+		
+		labelIn = new JLabel("I N");
+		labelIn.setFont(new Font("Times New Roman", 1, 20));
+		labelIn.setForeground(Color.RED);
+		labelIn.setBounds(120,100,200,30);
+		add(labelIn);
+		
+		labelOut = new JLabel("O U T");
+		labelOut.setFont(new Font("Times New Roman", 1, 20));
+		labelOut.setForeground(Color.RED);
+		labelOut.setBounds(290,100,200,30);
+		add(labelOut);
 		
 		/**
 		 * Etiqueta para identificación del área de trabajo.
@@ -102,7 +123,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		label18 = new JLabel("DESIGN");
 		label18.setFont(new Font("Times New Roman", 1, 20));
 		label18.setForeground(Color.RED);
-		label18.setBounds(690,65,200,30);
+		label18.setBounds(690,60,200,30);
 		add(label18);
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,7 +176,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 			public void mouseClicked(MouseEvent e) {
 				lineaV = new JLabel();
 				lineaV.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/LV.png"));
-				lineaV.setSize(10, 20);
+				lineaV.setSize(5, 20);
 				panel1.add(lineaV);
 				lineaV.addMouseMotionListener(new MouseAdapter() {
 					public void mouseDragged(MouseEvent e) {
@@ -167,8 +188,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				panel1.addMouseMotionListener(new MouseAdapter() {
 					public void mouseDragged(MouseEvent l) {
 						
-						lineaV.setSize(lineaV.getX(), l.getY()-lineaV.getHeight());
-						//lineaH.setSize(l.getX()-lineaH.getX(), lineaH.getHeight());
+						lineaV.setSize(lineaV.getWidth(), l.getY()-lineaV.getY());
 					}
 				});
 			}
@@ -423,7 +443,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
 				 */
 				lista.insertFirst(""+conectorInput.getLocation());
-				cuentaEntradas += 1;
+				cuentaIn += 1;
 				conectorInput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/INPUT.png"));
 				conectorInput.addMouseMotionListener(new MouseAdapter() {
 					public void mouseDragged(MouseEvent evt) {
@@ -460,7 +480,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
 				 */
 				lista.insertFirst(""+conectorOutput.getLocation());
-				cuentaSalidas += 1;
+				cuentaOut += 1;
 				conectorOutput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/OUTPUT.png"));
 				conectorOutput.addMouseMotionListener(new MouseAdapter() {
 					public void mouseDragged(MouseEvent evt) {
@@ -535,16 +555,26 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		label16.setBounds(394,60,2,45);
 		add(label16);
 		
+		sep1 = new JLabel();
+		sep1.setOpaque(true);
+		sep1.setBackground(Color.white);
+		sep1.setBounds(252,105,2,20);
+		add(sep1);
 		
+		sep2 = new JLabel();
+		sep2.setOpaque(true);
+		sep2.setBackground(Color.white);
+		sep2.setBounds(10,100,370,2);
+		add(sep2);
 		
 		
 		/**
 		 * Botón para simular el circuito.
 		 */
-		boton1 = new JButton("SIMULATE");
-		boton1.setBounds(1169,655,100,30);
+		boton1 = new JButton("SIMULATE IN");
+		boton1.setBounds(1050,635,220,30);
 		boton1.setFont(new Font("Times New Roman", 1, 12));
-		boton1.setBackground(Color.DARK_GRAY);
+		boton1.setBackground(Color.blue);
 		boton1.setForeground(Color.WHITE);
 		add(boton1);
 		boton1.addActionListener(this);
@@ -552,10 +582,10 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		/**
 		 * Botón para crear nuevo diseño.
 		 */
-		boton2 = new JButton("REMOVE");
-		boton2.setBounds(1050,655,100,30);
+		boton2 = new JButton("SIMULATE OUT");
+		boton2.setBounds(1050,670,220,30);
 		boton2.setFont(new Font("Times New Roman", 1, 12));
-		boton2.setBackground(Color.DARK_GRAY);
+		boton2.setBackground(Color.blue);
 		boton2.setForeground(Color.WHITE);
 		add(boton2);
 		boton2.addActionListener(this);
@@ -571,7 +601,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 	 * @param matriz
 	 * @param n
 	 */
-    public void mostrarMatriz(int matriz[][], int n){
+    public void mostrarMatriz1(int matriz[][], int n){
     	
     	int m = (int) Math.pow(2, n);
     	 DefaultTableModel model = (DefaultTableModel) tabla1.getModel();
@@ -603,7 +633,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
      * @param n
      * @return
      */
-    public int [][] matrizNormal(int n){
+    public int [][] matrizNormal1(int n){
         int[][] matriz = new int[10000][500];
         int m = (int) Math.pow(2, n);
         try {
@@ -611,6 +641,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
         		for (int j=n-1;   j>=0;   j--)  {
             	matriz[i][j] = (i/(int) Math.pow(2, j)) % 2; 
             }
+        		System.out.println(matriz);
         }}
         catch(Exception e) {
         	System.out.println("Error de ejecucion 2.");
@@ -618,23 +649,79 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
        	return matriz;
     }
     
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-	
+    /**
+	 * Método para mostrar en pantalla la tabla de verdad numero 2 del circuito.
+	 * @param matriz
+	 * @param k
+	 */
+    public void mostrarMatriz2(int matriz2[][], int f, int k){
+    	
+    	int m = (int) Math.pow(2, f);
+    	 DefaultTableModel model = (DefaultTableModel) tabla2.getModel();
+    	 /**
+    	  * Establece el numero de filas que va a tener la tabla.
+    	  */
+        model.setRowCount(m);  
+        /**
+         * Establece el numero de columnas que va a tener la tabla.
+         */
+        model.setColumnCount(k);
+        try {
+        for(int i=0; i<m; i++){
+            for(int j=k-1; j>=0; j--){
+            	/**
+            	 * Establace los valores para cada celda en el modelo de la tabla para cada fila y columna.
+            	 */
+                tabla1.setValueAt(matriz2[i][j], i, j); 
+            }
+        }
+        }
+        catch(Exception e) {
+        	System.out.println("Error de ejecucion 1.");
+        }
+    }
+    
+    /**
+     * Método para calcular la tabla de verdad numero 2.
+     * @param n
+     * @return
+     */
+    public int [][] matrizNormal2(int f, int k){ // pasamos el numero de columnas "k"
+        int[][] matriz2 = new int[10000][500];
+        int filas = (int) Math.pow(2, f); // necesito que el numero de filas sea 2^(n), y no 2^(k)
+        try {
+        	for (int i=0;   i < filas;   i++) {
+        		for (int j=k-1;   j>=0;   j--)  {
+            	matriz2[i][j] = (i/(int) Math.pow(2, j)) % 2; 
+            }
+        	//System.out.println(matriz2);
+        }}
+        catch(Exception e) {
+        	System.out.println("Error de ejecucion 2.");
+        }
+       	return matriz2;
+    }
+    
+    	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Se evalúan eventos realizados por "boton1" y "boton2".
 	 */
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("actionPerformed");////////////// prueba //////
 		if(e.getSource() == boton1) {
 			
-			int n = cuentaEntradas; /// este numero es provisional, es decir, lo voy a obtener del contador que identifique los componentes de la lista.
+			int n = cuentaIn;
 			int[][] matriz = new int[10000][500];
-			matriz = this.matrizNormal(n);  // matriz va a ser igual a la matriz que se forme en ese metodo.
-			this.mostrarMatriz(matriz, n);
-			
-		    //Validar que se guarde en el archivo json
+			matriz = this.matrizNormal1(n);  // matriz va a ser igual a la matriz que se forme en ese metodo.
+			this.mostrarMatriz1(matriz, n);
 			
 		}else if(e.getSource() == boton2) {
+			int f = cuentaIn;
+			int k = cuentaOut;
+			int[][] matriz2 = new int[10000][500];
+			matriz2 = this.matrizNormal2(f,k);  // matriz2 va a ser igual a la matriz que se forme en ese metodo.
+			this.mostrarMatriz2(matriz2, f , k);
 		
 		}
 	}
@@ -680,14 +767,6 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
  *  sus posiciones en x,y y su alto y ancho, de manera que yo pueda implementar un metodo que va a evaluar sobre que etiqueta está posicionado 
  *  el mouse con x- (x + width), y - (y + height).
  *  
- *  para conectar los concetores, usar etiquetas (puede ser una imagen de una linea o dibujar la linea con el metodo draw line)
- *  
- *  para la tabla de verdad hacer otra lista enlazada y ademas ver ficha donde esta un diagrama
- *  
- *  preguntar que tipo de lista usar y como para meter las imagenes de conectores (se puede usar linked list o Jlist o caul?)
- *  se me facilitaría usar un tipo de lista en la que  se puedan usar indices o claves.
- *  
- *  preguntar si las lines que debo hacer se pueden hacer con una clase vector (mostrar codigo de arriba donde esta lo del vector comentado).
  *  
  *  // probar haciendo arreglo de tipo entero para pasar posiciones finales de la etiqueta y luego recorrer el arreglo con un for que tenga 
  *  la condicion de que si la posicion del mouse es igual a la variable i del for (que seria como el contador o indice para que se valla incrementando en 
