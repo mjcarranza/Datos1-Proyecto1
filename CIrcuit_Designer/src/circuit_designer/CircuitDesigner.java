@@ -21,7 +21,7 @@ import java.awt.event.MouseEvent;
  */
 
 @SuppressWarnings("serial")
-public class CircuitDesigner extends JFrame implements ActionListener, MouseMotionListener{
+public class CircuitDesigner extends JFrame implements ActionListener{
 	
 	/**
 	 * se establecen las variables necesarias.
@@ -34,7 +34,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 	private JTable tabla1, tabla2;
 	private JTextField texto;
 	private int cuentaIn = 0; 
-	private int cuentaConect   = 0;
+	private int and=0, nand=0, or=0, nor=0, not=0, xor=0, xnor=0;
 	private int cuentaOut  = 0;
 	private boolean remove = false;
 	JPanel panel1 = new JPanel();
@@ -105,12 +105,18 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		label17.setBounds(100,60,200,30);
 		add(label17);
 		
+		/**
+		 * Etiqueta para identificación de las entradas en la tabla de verdad.
+		 */
 		labelIn = new JLabel("I N");
 		labelIn.setFont(new Font("Times New Roman", 1, 20));
 		labelIn.setForeground(Color.RED);
 		labelIn.setBounds(120,100,200,30);
 		add(labelIn);
 		
+		/**
+		 * Etiqueta para identificación de las salidas en la tabla de verdad.
+		 */
 		labelOut = new JLabel("O U T");
 		labelOut.setFont(new Font("Times New Roman", 1, 20));
 		labelOut.setForeground(Color.RED);
@@ -126,8 +132,9 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		label18.setBounds(690,60,200,30);
 		add(label18);
 		
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+		/**
+		 * Etiquetas que serán proyectadas en la intrefaz como compuertas lógicas, entradas y salidas
+		 */
 		ImageIcon horizontal = new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/H.jpg"); 
 		label20 = new JLabel(horizontal);
 		label20.setBounds(1071,400,69,46);
@@ -218,19 +225,13 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				lista.insertFirst(""+conectorAnd.getLocation());
 				System.out.println(lista.find(""+conectorAnd.getLocation()));
 				lista.displayList();
-				cuentaConect += 1;
+				and += 1;
 				conectorAnd.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/AND.png"));
 				conectorAnd.addMouseMotionListener(new MouseAdapter() {
 					public void mouseDragged(MouseEvent evt) {
 						if(e.getButton() == MouseEvent.BUTTON1) {
 						conectorAnd.setLocation(conectorAnd.getX()+evt.getX()-conectorAnd.getWidth()/2,conectorAnd.getY()+evt.getY()-conectorAnd.getHeight()/2);
 						}
-						
-						////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-						// buscar en la lista el conector comparando con la posición del mouse con posx, posy, ancho y alto.                         ///////////////
-						// y hacer la validación en est area. utilizar el codigo de setLocation que está debajo de este código                       ///////////////
-						// para if: (conectorAnd.getX()+evt.getX()-conectorAnd.getWidth()/4,conectorAnd.getY()+evt.getY()-conectorAnd.getHeight()/4) ///////////////
-						////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					}
 				});
 			}
@@ -257,6 +258,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				/**
 				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
 				 */
+				or += 1;
 				lista.insertFirst(""+conectorOr.getLocation());
 				conectorOr.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/OR.png"));
 				conectorOr.addMouseMotionListener(new MouseAdapter() {
@@ -288,6 +290,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				/**
 				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
 				 */
+				nand += 1;
 				lista.insertFirst(""+conectorNand.getLocation());
 				conectorNand.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/NAND.png"));
 				conectorNand.addMouseMotionListener(new MouseAdapter() {
@@ -319,6 +322,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				/**
 				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
 				 */
+				nor += 1;
 				lista.insertFirst(""+conectorNor.getLocation());
 				conectorNor.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/NOR.png"));
 				conectorNor.addMouseMotionListener(new MouseAdapter() {
@@ -349,6 +353,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				/**
 				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
 				 */
+				xor += 1;
 				lista.insertFirst(""+conectorXor.getLocation());
 				conectorXor.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/XOR.png"));
 				conectorXor.addMouseMotionListener(new MouseAdapter() {
@@ -380,6 +385,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				/**
 				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
 				 */
+				xnor += 1;
 				lista.insertFirst(""+conectorXnor.getLocation());
 				conectorXnor.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/XNOR.png"));
 				conectorXnor.addMouseMotionListener(new MouseAdapter() {
@@ -411,6 +417,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				/**
 				 * Se agregan la posiciones del la etiqueta creada a un nuevo nodo de la lista.
 				 */
+				not += 1;
 				lista.insertFirst(""+conectorNot.getLocation());
 				conectorNot.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/NOT.png"));
 				conectorNot.addMouseMotionListener(new MouseAdapter() {
@@ -444,7 +451,27 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				 */
 				lista.insertFirst(""+conectorInput.getLocation());
 				cuentaIn += 1;
-				conectorInput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/INPUT.png"));
+				conectorInput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/INPUT2.png"));
+				conectorInput.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent evt) {
+						System.out.println("evento realizado");
+						int cambiar = 0;
+						if (cambiar == 1) {
+							System.out.println("evento realizado............");
+							if(new Rectangle(conectorInput.getX(),conectorInput.getY(),conectorInput.getX()+conectorInput.getWidth(), conectorInput.getY()+conectorInput.getHeight()).contains(e.getLocationOnScreen())) {
+								conectorInput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/INPUT2.png"));
+								cambiar = 0;
+							}
+						}
+						else {
+							if(new Rectangle(conectorInput.getX(),conectorInput.getY(),conectorInput.getX()+conectorInput.getWidth(), conectorInput.getY()+conectorInput.getHeight()).contains(e.getLocationOnScreen())) {
+								conectorInput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/INPUT1.png"));
+								cambiar = 1;
+								System.out.println("evento realizado............q");
+						}
+					}
+					}
+				});
 				conectorInput.addMouseMotionListener(new MouseAdapter() {
 					public void mouseDragged(MouseEvent evt) {
 						conectorInput.setLocation(conectorInput.getX()+evt.getX()-conectorInput.getWidth()/2,conectorInput.getY()+evt.getY()-conectorInput.getHeight()/2);
@@ -481,7 +508,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 				 */
 				lista.insertFirst(""+conectorOutput.getLocation());
 				cuentaOut += 1;
-				conectorOutput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/OUTPUT.png"));
+				conectorOutput.setIcon(new ImageIcon("C:\\Users\\Mario\\Desktop\\CONECTORES LÓGICOS/OUTPUT2.png"));
 				conectorOutput.addMouseMotionListener(new MouseAdapter() {
 					public void mouseDragged(MouseEvent evt) {
 						conectorOutput.setLocation(conectorOutput.getX()+evt.getX()-conectorOutput.getWidth()/2,conectorOutput.getY()+evt.getY()-conectorOutput.getHeight()/2);
@@ -546,13 +573,13 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		label15 = new JLabel();
 		label15.setOpaque(true);
 		label15.setBackground(Color.white);
-		label15.setBounds(1044,60,2,45);
+		label15.setBounds(1044,60,2,35);
 		add(label15);
 		
 		label16 = new JLabel();
 		label16.setOpaque(true);
 		label16.setBackground(Color.white);
-		label16.setBounds(394,60,2,45);
+		label16.setBounds(394,60,2,35);
 		add(label16);
 		
 		sep1 = new JLabel();
@@ -571,7 +598,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		/**
 		 * Botón para simular el circuito.
 		 */
-		boton1 = new JButton("SIMULATE IN");
+		boton1 = new JButton("S I M U L A T E");
 		boton1.setBounds(1050,635,220,30);
 		boton1.setFont(new Font("Times New Roman", 1, 12));
 		boton1.setBackground(Color.blue);
@@ -582,7 +609,7 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
 		/**
 		 * Botón para crear nuevo diseño.
 		 */
-		boton2 = new JButton("SIMULATE OUT");
+		boton2 = new JButton("E X I T");
 		boton2.setBounds(1050,670,220,30);
 		boton2.setFont(new Font("Times New Roman", 1, 12));
 		boton2.setBackground(Color.blue);
@@ -634,8 +661,17 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
      * @return
      */
     public int [][] matrizNormal1(int n){
+    	/**
+    	 * Creacion de array matriz1.
+    	 */
         int[][] matriz = new int[10000][500];
+        /**
+         * Variable contiene el numero de filas de la columna.
+         */
         int m = (int) Math.pow(2, n);
+        /**
+         * Creación de try-catch para evitar errores de ejecución.
+         */
         try {
         	for (int i=0;   i < m;   i++) {
         		for (int j=n-1;   j>=0;   j--)  {
@@ -643,6 +679,9 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
             }
         		System.out.println(matriz);
         }}
+        /**
+         * Excepción al encontrar un error.
+         */
         catch(Exception e) {
         	System.out.println("Error de ejecucion 2.");
         }
@@ -652,32 +691,168 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     /**
-	 * Método para mostrar en pantalla la tabla de verdad numero 2 del circuito.
-	 * @param matriz
-	 * @param k
-	 */
-    public void mostrarMatriz2(int matriz2[][], int f, int k){
-    	
-    	int m = (int) Math.pow(2, f);
-    	 DefaultTableModel model = (DefaultTableModel) tabla2.getModel();
+     * Método para mostrar en pantalla la tabla de verdad con respecto a las salidas y compuertas del circuito.
+     * @param matriz2
+     * @param n
+     * @param k
+     * @param and
+     * @param nand
+     * @param or
+     * @param nor
+     * @param xor
+     * @param xnor
+     * @param not
+     */
+    public void mostrarMatriz2(int matriz2[][], int n, int k , int and, int nand, int or, int nor, int xor, int xnor, int not){
+    	/**
+    	 * Variable contiene el numero de filas de la matriz.
+    	 */
+    	int m = (int) Math.pow(2, n);
+    	 DefaultTableModel model2 = (DefaultTableModel) tabla2.getModel();
     	 /**
     	  * Establece el numero de filas que va a tener la tabla.
     	  */
-        model.setRowCount(m);  
+        model2.setRowCount(m);  
         /**
          * Establece el numero de columnas que va a tener la tabla.
          */
-        model.setColumnCount(k);
+        model2.setColumnCount(k);
+        /**
+         * Creación de try-catch para evitar errores de ejecución.
+         */
         try {
-        for(int i=0; i<m; i++){
-            for(int j=k-1; j>=0; j--){
-            	/**
-            	 * Establace los valores para cada celda en el modelo de la tabla para cada fila y columna.
-            	 */
-                tabla1.setValueAt(matriz2[i][j], i, j); 
-            }
+        for (int s=0; s==0; s++) {
+        	/**
+        	 * Condición para el caso de que el conector utilizado sea de tipo AND.
+        	 */
+        	if(and>0) {
+        		System.out.println("and2= "+and);
+        		for(int i=0; i<m; i++) {
+        			System.out.println("prueba para recursion i");
+        			for(int j=k-1; j==k-1; j--){
+        				System.out.println("prueba para recursion j");
+        				tabla2.setValueAt(matriz2[i][j] * matriz2[i][j+1], i, j); 
+        				System.out.println(tabla2.getValueAt( i, j));
+        			}
+        		}
+        		s += 1;
+        	}
+        	/**
+        	 * Condición para el caso de que el conector utilizado sea de tipo NAND.
+        	 */
+        	if(nand>0) {
+        		for(int i=0; i<m; i++) {
+        			for(int j=k-1; j==k-1; j--){ 
+        				if((matriz2[i][j] + matriz2[i][j+1]) == 2) {
+        					tabla2.setValueAt(0, i, j); 
+        				}else {
+        				tabla2.setValueAt(1, i, j); 
+        				}
+        				s += 1;
+        			}
+        		}
+        	}
+        	/**
+        	 * Condición para el caso de que el conector utilizado sea de tipo OR.
+        	 */
+        	if(or>0) {
+        		for(int i=0; i<m; i++) {
+        			for(int j=k-1; j==k-1; j--){ 
+        				if((matriz2[i][j] + matriz2[i][j+1]) == 2) {
+        					tabla2.setValueAt(1, i, j); 
+        				}else {
+        				tabla2.setValueAt(matriz2[i][j] + matriz2[i][j+1], i, j); 
+        				}
+        				s += 1;
+        			}
+        		}
+        	}
+        	/**
+        	 * Condición para el caso de que el conector utilizado sea de tipo NOR.
+        	 */
+        	if(nor>0) {
+        		for(int i=0; i<m; i++) {
+        			for(int j=k-1; j==k-1; j--){
+        				if((matriz2[i][j] + matriz2[i][j+1]) == 0) {
+        					tabla2.setValueAt(1, i, j); 
+        				}else {
+        				tabla2.setValueAt(0, i, j);
+        				}
+        			}
+        		}
+        		s += 1;
+        	}
+        	/**
+        	 * Condición para el caso de que el conector utilizado sea de tipo XOR.
+        	 */
+        	if(xor>0) {
+        		for(int i=0; i<m; i++) {
+        			for(int j=k-1; j==k-1; j--){ 
+        				if((matriz2[i][j] + matriz2[i][j+1]) == 2) {
+        					tabla2.setValueAt(0, i, j); 
+        				} else
+        				if((matriz2[i][j] + matriz2[i][j+1]) == 0) {
+        					tabla2.setValueAt(0, i, j); 
+        				}
+        				else {
+        				tabla2.setValueAt(1, i, j); 
+        				}
+        				s += 1;
+        			}
+        		}
+        	}
+        	/**
+        	 * Condición para el caso de que el conector utilizado sea de tipo XNOR.
+        	 */
+        	if(xnor>0) {
+        		for(int i=0; i<m; i++) {
+        			for(int j=k-1; j==k-1; j--){ 
+        				if((matriz2[i][j] + matriz2[i][j+1]) == 1) {
+        					tabla2.setValueAt(0, i, j); 
+        				}
+        				else {
+        				tabla2.setValueAt(1, i, j); 
+        				}
+        				s += 1;
+        			}
+        		}
+        	}
+        	/**
+        	 * Condición para el caso de que el conector utilizado sea de tipo NOT.
+        	 */
+        	if(not>0) {
+        		for(int i=0; i<m; i++) {
+        			for(int j=k-1; j==k-1; j--){
+        				if(matriz2[i][j] == 0) {
+        					tabla2.setValueAt(1, i, j); 
+        				}else {
+        				tabla2.setValueAt(0, i, j);
+        				}
+        			}
+        		}
+        		s += 1;
+        	}
+        	
+        	/**
+        	 * Condición para el caso de que no sea utilizado ningun conector.
+        	 */
+        	if(and==0 && nand==0 && or==0 && nor==0 && xor==0 && xnor==0 && not==0){
+        		for(int i=0; i<m; i++){
+                    for(int j=k-1; j>=0; j--){
+                    	/**
+                    	 * Establace los valores para cada celda en el modelo de la tabla para cada fila y columna.
+                    	 */
+                        tabla2.setValueAt(0, i, j); 
+                    }
+                }
+        	}
         }
+      
+        
         }
+        /**
+         * Excepción.
+         */
         catch(Exception e) {
         	System.out.println("Error de ejecucion 1.");
         }
@@ -689,54 +864,59 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
      * @return
      */
     public int [][] matrizNormal2(int f, int k){ // pasamos el numero de columnas "k"
-        int[][] matriz2 = new int[10000][500];
-        int filas = (int) Math.pow(2, f); // necesito que el numero de filas sea 2^(n), y no 2^(k)
+    	/**
+    	 * Se crea el array de la matriz.
+    	 */
+        int[][] matriz2 = new int[f][k];
+        int filas = (int) Math.pow(2, f);
+        /**
+         * Creación de try-catch para aveitar errores en ejecución.
+         */
         try {
         	for (int i=0;   i < filas;   i++) {
         		for (int j=k-1;   j>=0;   j--)  {
-            	matriz2[i][j] = (i/(int) Math.pow(2, j)) % 2; 
-            }
-        	//System.out.println(matriz2);
-        }}
+        			/**
+        			 * Se pasan los valores a la matriz.
+        			 */
+        			matriz2[i][j] = (i/(int) Math.pow(2, j)) % 2; 
+        		}
+        	}
+        }
+        /**
+         * Excepción.
+         */
         catch(Exception e) {
         	System.out.println("Error de ejecucion 2.");
         }
        	return matriz2;
     }
     
-    	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 	/**
 	 * Se evalúan eventos realizados por "boton1" y "boton2".
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == boton1) {
 			
+			int and1 = and;
+			int nand1 = nand;
+			int or1 = or;
+			int nor1 = nor;
+			int xor1 = xor;
+			int xnor1 = xnor;
+			int not1 = not;
+			int k = cuentaOut;
 			int n = cuentaIn;
 			int[][] matriz = new int[10000][500];
 			matriz = this.matrizNormal1(n);  // matriz va a ser igual a la matriz que se forme en ese metodo.
 			this.mostrarMatriz1(matriz, n);
+			this.mostrarMatriz2(matriz, n , k , and1, nand1, or1, nor1, xor1, xnor1, not1);
 			
 		}else if(e.getSource() == boton2) {
-			int f = cuentaIn;
-			int k = cuentaOut;
-			int[][] matriz2 = new int[10000][500];
-			matriz2 = this.matrizNormal2(f,k);  // matriz2 va a ser igual a la matriz que se forme en ese metodo.
-			this.mostrarMatriz2(matriz2, f , k);
-		
+			System.exit(0);
 		}
 	}
 	
-	@Override
-	public void mouseDragged(MouseEvent l) {
-		
-	}
-
-
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 	/**
@@ -758,22 +938,3 @@ public class CircuitDesigner extends JFrame implements ActionListener, MouseMoti
  * Fin de la clase.
  */
 }
-
-
-
-/* comentarios generales: 
- * 
- *  para que se muevan todos los conectores de un mismo tipo, crear un objeto tipo nodo en el cual se va a almacenar la etiqueta y además 
- *  sus posiciones en x,y y su alto y ancho, de manera que yo pueda implementar un metodo que va a evaluar sobre que etiqueta está posicionado 
- *  el mouse con x- (x + width), y - (y + height).
- *  
- *  
- *  // probar haciendo arreglo de tipo entero para pasar posiciones finales de la etiqueta y luego recorrer el arreglo con un for que tenga 
- *  la condicion de que si la posicion del mouse es igual a la variable i del for (que seria como el contador o indice para que se valla incrementando en 
- *  valor y se pueda recorrer el arreglo), entonces que se mueva esa etiqueta.
- *   
- *   
- *   ??????????como hago un objeto de tipo nodo para guardar los datos de cada compuerta???????????????????????????????
- *  
- * */
-
