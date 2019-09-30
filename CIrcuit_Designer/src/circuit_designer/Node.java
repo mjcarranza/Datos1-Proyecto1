@@ -8,7 +8,7 @@ package circuit_designer;
  *
  */
 public class Node {
-	/*
+	/**
 	 * Variables para la ejecución.
 	 */
     private Object data;
@@ -28,6 +28,36 @@ public class Node {
     public Object getData() {
         return this.data;
     }
+    /**
+     * Método que obtiene la posición en X de un nodo.
+     * @param data
+     * @return
+     */
+    public Object getX(Object data) {
+		return this.getData();
+    }
+    /**
+     * Método que obtiene la posición en Y de un nodo.
+     * @return
+     */
+    public Object getY() {
+		return this.getY();
+    }
+    /**
+     * Método que obtiene el valor de la altura de un nodo.
+     * @return
+     */
+    public Object getHeight() {
+		return this.getHeight();
+    }
+    /**
+     * Método que obtiene el ancho de un nodo.
+     * @return
+     */
+    public Object getWidth() {
+		return this.getWidth();
+    }
+    
     /**
      * Método modifica los datos almacenados en un nodo.
      * @param data
