@@ -85,17 +85,26 @@ public class Bienvenida extends JFrame implements ActionListener{
 	 */
 	public void actionPerformed(ActionEvent e) {
 		/**
+		 * Variable para saber si el usuario eligió salir o no de la interfaz.
+		 */
+		int seleccion;
+		/**
 		 * Botón para salir de la interfaz.
 		 */
 		if(e.getSource() == salir) {
 			/**
 			 * Mensaje de advertencia antes de salir
 			 */
-			JOptionPane.showMessageDialog(null, "Do you really wan to leave?.");
+			seleccion = JOptionPane.showConfirmDialog(this, "Do you really want to leave?");
+			if(seleccion == 0) {
 			/**
 			 * Acción de salir.
 			 */
 			System.exit(0);
+			}
+			else {
+				System.out.println("continua la ejeccion del programa.");
+			}
 		    
 		} 
 		/**
